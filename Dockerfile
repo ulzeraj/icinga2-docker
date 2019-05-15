@@ -24,7 +24,7 @@ RUN apt-get install -y curl apt-transport-https
 RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/ubuntu icinga-bionic main\n" > /etc/apt/sources.list.d/icinga2.list
 RUN printf "deb-src http://packages.icinga.com/ubuntu icinga-bionic main\n" >> /etc/apt/sources.list.d/icinga2.list
-RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-pgsql monitoring-plugins
+RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-pgsql monitoring-plugins gnupg
 RUN if [ "$ENABLE_INFLUXDB" == "yes" ]; then icinga2 feature enable influxdb; fi ;\
     if [ "$ENABLE_DIRECTOR" == "yes" ]; then icinga2 feature enable director; fi ;\
     if [ "$ENABLE_API" == "yes" ]; then icinga2 feature enable api; fi ;\
