@@ -128,6 +128,6 @@ if [ "$ENABLE_STATUSDATA" == "yes" ]; then
     icinga2 feature enable statusdata 
 fi
 
-unset ${INFLUXDB_PASSWORD}
-unset ${MYSQL_PASSWORD}
-unset ${PGSQL_PASSWORD}
+unset INFLUXDB_PASSWORD
+unset MYSQL_PASSWORD
+unset PGSQL_PASSWORD
