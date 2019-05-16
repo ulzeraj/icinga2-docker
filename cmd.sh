@@ -1,11 +1,29 @@
 #!/bin/bash
 if [ "$ENABLE_INFLUXDB" == "yes" ]; then 
     icinga2 feature enable influxdb 
-    sed -i "s/\(^host = \).*/\1\"${INFLUXDB_HOST}\"/" /etc/icinga2/features-enabled/influxdb.conf
-    sed -i "s/\(^port = \).*/\1\"${INFLUXDB_PORT}\"/" /etc/icinga2/features-enabled/influxdb.conf
-    sed -i "s/\(^database = \).*/\1\"${INFLUXDB_DATABASE}\"/" /etc/icinga2/features-enabled/influxdb.conf
-    sed -i "s/\(^username = \).*/\1\"${INFLUXDB_USERNAME}\"/" /etc/icinga2/features-enabled/influxdb.conf
-    sed -i "s/\(^password = \).*/\1\"${INFLUXDB_PASSWORD}\"/" /etc/icinga2/features-enabled/influxdb.conf
+    printf "\n
+object InfluxdbWriter "influxdb" {
+    host = "${INFLUXDB_HOST}"
+    port = ${INFLUXDB_PORT}
+    database = "${INFLUXDB_DATABASE}"
+    username = "${INFLUXDB_USERNAME}"
+    password = "${INFLUXDB_PASSWORD}"
+    flush_threshold = 1024
+    flush_interval = 10s
+    host_template = {
+        measurement = "$host.check_command$"
+        tags = {
+            hostname = "$host.name$"
+        }
+    }
+    service_template = {
+       measurement = "$service.check_command$"
+       tags = {
+           hostname = "$host.name$"
+           service = "$service.name$"
+       }
+   }
+}\n" > /etc/icinga2/features-enabled/influxdb.conf
 fi
 
 
@@ -69,12 +87,12 @@ fi
     
 if [ "$ENABLE_IDO_MYSQL" == "yes" ]; then 
     icinga2 feature enable ido-mysql 
-    sed -i "s/\(^host = \).*/\1\"${MYSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
-    sed -i "s/\(^port = \).*/\1\"${MYSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
-    sed -i "s/\(^database = \).*/\1\"${MYSQL_DATABASE}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
-    sed -i "s/\(^username = \).*/\1\"${MYSQL_USERNAME}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
-    sed -i "s/\(^password = \).*/\1\"${MYSQL_PASSWORD}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
-    if [ -f /var/mysql-provisioned ]; then
+    sed -i "s/\(host = \).*/\1\"${MYSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
+    sed -i "s/\(port = \).*/\1\"${MYSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
+    sed -i "s/\(database = \).*/\1\"${MYSQL_DATABASE}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
+    sed -i "s/\(username = \).*/\1\"${MYSQL_USERNAME}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
+    sed -i "s/\(password = \).*/\1\"${MYSQL_PASSWORD}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
+    if [ ! -f /var/mysql-provisioned ]; then
         printf "[client]\n" > /root/.my.cnf
         printf "user=${MYSQL_USERNAME}\n" >> /root/.my.cnf
         printf "password=${MYSQL_PASSWORD}\n" >> /root/.my.cnf
@@ -90,11 +108,11 @@ fi
     
 if [ "$ENABLE_IDO_PGSQL" == "yes" ]; then 
     icinga2 feature enable ido-pgsql 
-    sed -i "s/\(^host = \).*/\1\"${PGSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
-    sed -i "s/\(^port = \).*/\1\"${PGSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
-    sed -i "s/\(^database = \).*/\1\"${PGSQL_DATABASE}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
-    sed -i "s/\(^username = \).*/\1\"${PGSQL_USERNAME}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
-    sed -i "s/\(^password = \).*/\1\"${PGSQL_PASSWORD}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
+    sed -i "s/\(host = \).*/\1\"${PGSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
+    sed -i "s/\(port = \).*/\1\"${PGSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
+    sed -i "s/\(database = \).*/\1\"${PGSQL_DATABASE}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
+    sed -i "s/\(username = \).*/\1\"${PGSQL_USERNAME}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
+    sed -i "s/\(password = \).*/\1\"${PGSQL_PASSWORD}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
     if [ -f /var/pgsql-provisioned ]; then
         export PGPASSWORD=${PGSQL_PASSWORD}
 	psql -h ${PGSQL_HOST} -p ${PGSQL_PORT} -U ${PGSQL_USERNAME} -d ${PGSQL_DATABASE} < /usr/share/icinga2-ido-pgsql/schema/pgsql.sql
