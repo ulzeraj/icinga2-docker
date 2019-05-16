@@ -28,6 +28,7 @@ RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpk
 RUN mkdir -p /run/icinga2/cmd
 RUN /usr/lib/icinga2/prepare-dirs
 COPY supervisord.conf /supervisord.conf
+COPY icinga2_supervisord.sh /icinga2_supervisord.sh
 COPY cmd.sh /cmd.sh
-RUN chmod 755 /cmd.sh
+RUN chmod 755 /cmd.sh /icinga2_supervisord.sh
 CMD ["/cmd.sh"]
