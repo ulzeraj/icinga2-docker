@@ -11,7 +11,6 @@ ENV ENABLE_COMPATLOG="no"
 ENV ENABLE_DEBUGLOG="no"
 ENV ENABLE_GELF="no"
 ENV ENABLE_GRAPHITE="no"
-ENV ENABLE_ICINGASTATUS="yes"
 ENV ENABLE_IDO-MYSQL="yes"
 ENV ENABLE_IDO-PGSQL="no"
 ENV ENABLE_LIVESTATUS="no"
@@ -24,10 +23,10 @@ RUN apt-get install -y curl apt-transport-https gnupg
 RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/ubuntu icinga-bionic main\n" > /etc/apt/sources.list.d/icinga2.list
 RUN printf "deb-src http://packages.icinga.com/ubuntu icinga-bionic main\n" >> /etc/apt/sources.list.d/icinga2.list
-RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-pgsql monitoring-plugins 
+RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-pgsql monitoring-plugins supervisor
 RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 COPY entrypoint.sh /entrypoint.sh
-COPY cmd.sh /cmd.sh
-RUN chmod 755 /entrypoint.sh /cmd.sh
+COPY supervisord.conf /supervisord.conf
+RUN chmod 755 /entrypoint.sh 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/cmd.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
