@@ -9,14 +9,9 @@ if [ "$ENABLE_INFLUXDB" == "yes" ]; then
 fi
 
 
-if [ "$ENABLE_DIRECTOR" == "yes" ]; then 
-    icinga2 feature enable director 
-fi
-
-
 if [ "$ENABLE_API" == "yes" ]; then 
     icinga2 feature enable api 
-    if [ -f "/etc/icinga2/features-enabled/api.conf" ]
+    if [ -f "/etc/icinga2/features-enabled/api.conf" ]; then
         icinga2 api setup
     fi
 fi
@@ -47,7 +42,7 @@ if [ "$ENABLE_COMPATLOG" == "yes" ]; then
 fi 
 
     
-if [ "$ENABLE_DEBUGLOG" == "yes" ]; then i
+if [ "$ENABLE_DEBUGLOG" == "yes" ]; then 
     icinga2 feature enable debuglog 
 fi 
 
