@@ -3,24 +3,24 @@ if [ "$ENABLE_INFLUXDB" == "yes" ]; then
     icinga2 feature enable influxdb 
     printf "\n
 object InfluxdbWriter "influxdb" {
-    host = "${INFLUXDB_HOST}"
+    host = \"${INFLUXDB_HOST}\"
     port = ${INFLUXDB_PORT}
-    database = "${INFLUXDB_DATABASE}"
-    username = "${INFLUXDB_USERNAME}"
-    password = "${INFLUXDB_PASSWORD}"
+    database = \"${INFLUXDB_DATABASE}\"
+    username = \"${INFLUXDB_USERNAME}\"
+    password = \"${INFLUXDB_PASSWORD}\"
     flush_threshold = 1024
     flush_interval = 10s
     host_template = {
-        measurement = "$host.check_command$"
+        measurement = \"\$host.check_command\$\"
         tags = {
-            hostname = "$host.name$"
+            hostname = \"\$host.name\$\"
         }
     }
     service_template = {
-       measurement = "$service.check_command$"
+       measurement = \"\$service.check_command\$\"
        tags = {
-           hostname = "$host.name$"
-           service = "$service.name$"
+           hostname = \"\$host.name\$\"
+           service = \"\$service.name\$\"
        }
    }
 }\n" > /etc/icinga2/features-enabled/influxdb.conf
