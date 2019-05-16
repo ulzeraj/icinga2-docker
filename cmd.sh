@@ -67,7 +67,7 @@ if [ "$ENABLE_ICINGASTATUS" == "yes" ]; then
 fi 
 
     
-if [ "$ENABLE_IDO-MYSQL" == "yes" ]; then 
+if [ "$ENABLE_IDO_MYSQL" == "yes" ]; then 
     icinga2 feature enable ido-mysql 
     sed -i "s/\(^host = \).*/\1\"${MYSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
     sed -i "s/\(^port = \).*/\1\"${MYSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-mysql.conf
@@ -88,7 +88,7 @@ if [ "$ENABLE_IDO-MYSQL" == "yes" ]; then
 fi 
 
     
-if [ "$ENABLE_IDO-PGSQL" == "yes" ]; then 
+if [ "$ENABLE_IDO_PGSQL" == "yes" ]; then 
     icinga2 feature enable ido-pgsql 
     sed -i "s/\(^host = \).*/\1\"${PGSQL_HOST}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
     sed -i "s/\(^port = \).*/\1\"${PGSQL_PORT}\"/" /etc/icinga2/features-enabled/ido-pgsql.conf
