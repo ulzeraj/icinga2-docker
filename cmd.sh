@@ -131,3 +131,6 @@ fi
 unset INFLUXDB_PASSWORD
 unset MYSQL_PASSWORD
 unset PGSQL_PASSWORD
+
+/usr/bin/supervisord -c /supervisord.conf
+
