@@ -27,5 +27,5 @@ RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-
 RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 COPY supervisord.conf /supervisord.conf
 COPY cmd.sh /cmd.sh
-RUN chmod 755 /entrypoint.sh 
+RUN chmod 755 /cmd.sh
 CMD ["/cmd.sh"]
