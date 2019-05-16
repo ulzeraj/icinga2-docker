@@ -11,7 +11,7 @@ fi
 
 if [ "$ENABLE_API" == "yes" ]; then 
     icinga2 feature enable api 
-    if [ !-f "/var/lib/icinga2/ca/ca.key" ]; then
+    if [ ! -f "/var/lib/icinga2/ca/ca.key" ]; then
         icinga2 api setup
     fi
 fi
@@ -132,5 +132,4 @@ unset INFLUXDB_PASSWORD
 unset MYSQL_PASSWORD
 unset PGSQL_PASSWORD
 
-/usr/bin/supervisord -c /supervisord.conf
-
+/usr/bin/supervisord -n -c /supervisord.conf
