@@ -25,6 +25,7 @@ RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/ubuntu icinga-bionic main\n" > /etc/apt/sources.list.d/icinga2.list
 RUN printf "deb-src http://packages.icinga.com/ubuntu icinga-bionic main\n" >> /etc/apt/sources.list.d/icinga2.list
 RUN apt-get update && apt-get install -y icinga2 icinga2-ido-mysql  icinga2-ido-pgsql monitoring-plugins 
+RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 COPY entrypoint.sh /entrypoint.sh
 COPY cmd.sh /cmd.sh
 RUN chmod 755 /entrypoint.sh /cmd.sh
