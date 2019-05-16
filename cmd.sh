@@ -2,7 +2,7 @@
 if [ "$ENABLE_INFLUXDB" == "yes" ]; then 
     icinga2 feature enable influxdb 
     printf "\n
-object InfluxdbWriter "influxdb" {
+object InfluxdbWriter \"influxdb\" {
     host = \"${INFLUXDB_HOST}\"
     port = ${INFLUXDB_PORT}
     database = \"${INFLUXDB_DATABASE}\"
