@@ -11,7 +11,7 @@ fi
 
 if [ "$ENABLE_API" == "yes" ]; then 
     icinga2 feature enable api 
-    if [ -f "/etc/icinga2/features-enabled/api.conf" ]; then
+    if [ !-f "/var/lib/icinga2/ca/ca.key" ]; then
         icinga2 api setup
     fi
 fi
