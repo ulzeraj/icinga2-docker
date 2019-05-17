@@ -32,6 +32,11 @@ if [ "$ENABLE_API" == "yes" ]; then
     if [ ! -f "/var/lib/icinga2/ca/ca.key" ]; then
         icinga2 api setup
     fi
+    printf "
+object ApiUser \"${API_USERNAME}\" {
+    password = \"${API_PASSWORD}\"
+    permissions = [ \"*\" ]
+}\n" > /etc/icinga2/conf.d/api-users.conf
 fi
 
 
