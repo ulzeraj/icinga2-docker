@@ -150,3 +150,5 @@ fi
 if [ "$ENABLE_STATUSDATA" == "yes" ]; then 
     icinga2 feature enable statusdata 
 fi
+
+exec "$@"
