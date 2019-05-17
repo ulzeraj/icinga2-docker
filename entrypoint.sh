@@ -102,6 +102,7 @@ if [ "$ENABLE_IDO_MYSQL" == "yes" ]; then
         printf "user=${MYSQL_USERNAME}\n" >> /root/.my.cnf
         printf "password=${MYSQL_PASSWORD}\n" >> /root/.my.cnf
         chmod 600 /root/.my.cnf
+	sleep 30
 	mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /usr/share/icinga2-ido-mysql/schema/mysql.sql
 	if [ ${?} -eq 0 ]; then
             touch /var/mysql-provisioned
